@@ -6,12 +6,12 @@ sidebar:
 
 This section of the documentations contains the "Software Requirements
 Specifications (SRS)" for Crisp. All feature enhancements and related
-development on the project will be based on the criterias listed here on this
+development on the project will be based on the criteria listed in this
 document. Any other feature request or behaviour of the tool which can be
-considered out-of-scope of this document will not be worked upon. In case, a
+considered out-of-scope of this document will not be worked upon. If a
 functionality or behaviour has been heavily requested by community members, the
 document will first have to be updated accordingly before development on the
-functionality can start taking shape.
+functionality can begin.
 
 ## Purpose
 
@@ -24,9 +24,9 @@ it simply, Crisp is a linter for Git commit messages!
 ## Scope
 
 The core functionality of Crisp should be to enforce the rules and guidelines
-for authoring Git commit messages in accordance to the Conventional Commits
-v1.0.0 specifications. Additional functionalities can be added to the project
-but they should not deviate from the core functionality.
+for authoring Git commit messages in accordance with the Conventional Commits
+v1.0.0 specification. Additional functionality can be added to the project
+but it should not deviate from the core functionality.
 
 On top of the core functionality mentioned above, the following functionalities
 (and their similarities) should be outright considered out of scope for the

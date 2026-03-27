@@ -18,8 +18,8 @@ process ensures smooth collaboration and code quality.
 Crisp is a linter for enforcing a uniform standard for writing
 [Git](https://git-scm.com) commit messages. The goal of this project is to
 provide an easy-to-use, efficient tool for linting Git commit messages in
-accordance to the [Conventional Commits](https://www.conventionalcommits.org)
-specifications. It is written in Go for its simplicity, performance, and ease of
+accordance with the [Conventional Commits](https://www.conventionalcommits.org)
+specification. It is written in Go for its simplicity, performance, and ease of
 use in building command-line tools.
 
 ## Setting Up the Development Environment
@@ -73,8 +73,7 @@ To maintain code consistency across the project, please adhere to the following
 guidelines:
 
 - **File structure**: Use a logical file structure to organize the project
-  (e.g., `cmd` for CLI commands, `pkg` for core logic, `internal` for internal
-  packages).
+  (e.g., `cmd` for CLI commands, `internal` for internal packages).
 - **Go naming conventions**: Follow the official Go naming conventions. For
   example, use camelCase for variable names and PascalCase for function names
   and types.

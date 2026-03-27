@@ -3,14 +3,13 @@ title: Command-Line Interface (CLI) Reference
 description: The CLI reference of Crisp
 ---
 
-Crisp as a CLI tool is rather quite simple and straight-forward to use. It has
-been kept that way intentionally and its simplicity is one of the core design
-principle of the tool. Hence this section of the documentation provides a
-detailed reference of the very list of commands available for `crisp`.
+Crisp as a CLI tool is intentionally simple and straightforward to use. Its
+simplicity is one of the core design principles of the tool. This section of
+the documentation provides a detailed reference of the commands available for
+`crisp`.
 
-While this section of the documentation exists for an easier reference browsing
-over your preferred web browser, it is highly recommended you use `help` command
-for quick reference instead.
+While this section exists for convenient reference in your browser, it is
+recommended to use the `help` command for quick reference instead.
 
 ## Reference
 
@@ -31,7 +30,7 @@ purposes they fulfill.
 | `bash`       | Generate the autocompletion script for Bash.       |
 | `fish`       | Generate the autocompletion script for Fish.       |
 | `powershell` | Generate the autocompletion script for PowerShell. |
-| `zsh`        | Generate the autocompletion script Zsh.            |
+| `zsh`        | Generate the autocompletion script for Zsh.        |
 
 TODO: Add some examples of its usage.
 

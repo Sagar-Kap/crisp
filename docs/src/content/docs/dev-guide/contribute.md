@@ -95,7 +95,7 @@ Please adhere to the following guidelines:
   indentation).
 - **Naming conventions**: Use descriptive names for variables, functions, and
   classes.
-- **Documentation**: Ensure that your code is well-documented. Use docstrings or
+- **Documentation**: Ensure your code is well-documented. Use docstrings or
   comments to explain complex logic.
 - **Commit messages**: Follow the
   [Conventional Commits](#commit-message-conventions) specifications for writing

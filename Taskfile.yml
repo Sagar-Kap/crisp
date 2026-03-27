@@ -33,6 +33,8 @@ tasks:
     cmds:
       - task: install
       - task: docs:setup
+      - pre-commit install --install-hooks
+      - pre-commit install --hook-type commit-msg
 
   build:
     desc: Build the binary for the current system architecture.

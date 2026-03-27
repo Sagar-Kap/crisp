@@ -2,8 +2,7 @@
 title: Architectural Overview
 ---
 
-The internal logic that powers Crisp are divided into three distinct individual
-parts:
+The internal logic that powers Crisp is divided into three distinct parts:
 
 1. The **reader** which is responsible for reading the Git commit message either
    from STDIN (piped in) or from the `$GIT_DIR/COMMIT_EDITMSG` file (see the
@@ -15,9 +14,9 @@ parts:
 3. The `validator` which is responsible for running some validation logic on the
    parsed data.
 
-Under the hood, all three of the aforementioned components work in tandem to
-lint your Git commit messages. The following diagram will provide a better
-understanding of the underlying logic of the software.
+Under the hood, all three components work in tandem to lint your Git commit
+messages. The following diagram provides a better understanding of the
+underlying logic.
 
 ```mermaid
 sequenceDiagram
@@ -70,7 +69,7 @@ following means:
 3. Read the `$GIT_DIR/COMMIT_EDITMSG` file.
 
 In other words, Crisp can read a commit message if it is directly passed to it
-as a argument of the `message` command as shown below;
+as an argument of the `message` command as shown below:
 
 ```console
 crisp message "$(git show --no-patch --format=%B)"
@@ -81,7 +80,7 @@ for quickly validating a single message. The recommended approach to lint a
 commit message is to pass the data to Crisp through `STDIN`. Crisp will read
 from `STDIN` if the `--stdin` flag is passed to the `message` command.
 
-So, piping a commit message to Crisp is possible like this;
+Piping a commit message to Crisp is possible like this:
 
 ```console
 git show --no-patch --format=%B | crisp message --stdin
@@ -92,8 +91,8 @@ reading from the
 [`$GIT_DIR/COMMIT_EDITMSG`](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt-codeGITDIRCOMMITEDITMSGcode)
 file.
 
-The diagram below will provide a better understanding of how the reader works
-behind-the-scenes.
+The diagram below provides a better understanding of how the reader works
+behind the scenes.
 
 ```mermaid
 stateDiagram-v2
@@ -124,22 +123,71 @@ stateDiagram-v2
 
 ## Parser
 
-<!--prettier-ignore-start-->
-:::caution
-The parser is still heavily a work-in-progress (WIP) and hence information regarding it
-is temporarily unavailable.
-:::
-<!--prettier-ignore-end-->
-
 The parser is responsible for receiving content from the reader and parsing it
-into the following components;
+into the following components:
 
-1. **Header**
-2. **Body**
-3. **Footer**
+1. **Header** — the first line of the commit message, containing the type,
+   optional scope, and description.
+2. **Body** — optional free-form text separated from the header by a blank line.
+3. **Footers** — optional key-value pairs (e.g. `BREAKING CHANGE`, `Closes`,
+   `Fixes`, `Refs`) appearing after the body.
 
-Upon successful parsing operation, the logic generates and returns a Go struct
-for further processing and data validation.
+Upon a successful parse, the logic returns a `CommitMessage` struct for further
+processing and validation:
+
+```go
+type CommitMessage struct {
+    Type        string
+    Scope       string
+    Description string
+    Body        string
+    Footers     map[string]string
+}
+```
+
+### Header parsing
+
+The header is parsed using a regular expression that expects the following
+format:
+
+```
+<TYPE>(<SCOPE>): <DESCRIPTION>
+```
+
+The scope is optional. If the header does not match this format, an error is
+returned immediately with a reference to the Conventional Commits specification.
+
+### Body and footer parsing
+
+Lines after the header are processed sequentially. The parser tracks whether it
+is inside the footer section using an internal flag. A line is treated as a
+footer if it matches a recognised key (`BREAKING CHANGE`, `Closes`, `Fixes`, or
+`Refs`) followed by a colon and a value. Once a footer line is detected, all
+subsequent lines are treated as footers. Body lines are accumulated until the
+footer section begins.
+
+The diagram below illustrates the full parsing flow:
+
+```mermaid
+flowchart TD
+    A[Raw commit message string] --> B[Split into lines]
+    B --> C{First line empty?}
+    C -- Yes --> D[Return error: no commit message]
+    C -- No --> E[Parse header with regex]
+    E --> F{Header matches format?}
+    F -- No --> G[Return error: invalid format]
+    F -- Yes --> H[Extract Type, Scope, Description]
+    H --> I[Process remaining lines]
+    I --> J{Line is a known footer?}
+    J -- Yes --> K[Add to footers map\nSet inFooter = true]
+    J -- No --> L{inFooter = true?}
+    L -- Yes --> M[Discard line]
+    L -- No --> N[Append to body]
+    K --> I
+    M --> I
+    N --> I
+    I --> O[Return CommitMessage struct]
+```
 
 ## Validator
 
